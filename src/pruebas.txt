@@ -1,0 +1,17 @@
+-- PRUEBA 1: Valida
+insertar en tabla t_clientes valores: id = 1, nombre = 'Ana', ciudad = 'Tunja', activo = verdadero fin;
+
+-- PRUEBA 2: Valida
+insertar en tabla t_productos valores: codigo = 100, nombre = 'Teclado', stock = 25, disponible = falso fin;
+
+-- PRUEBA 3: Valida
+insertar en tabla t_pedidos valores: id = 1, cliente_id = 1, total = 50000, pagado = verdadero fin;
+
+-- PRUEBA 4: Error Sintactico (falta coma)
+insertar en tabla t_clientes valores: id = 2 nombre = 'Luis' fin;
+
+-- PRUEBA 5: Error Sintactico (falta el fin)
+insertar en tabla t_clientes valores: id = 3, nombre = 'Pedro';
+
+-- PRUEBA 6: Error Lexico (tabla no válida, falta t_)
+insertar en tabla clientes valores: id = 4, nombre = 'Maria' fin;
