@@ -1,15 +1,5 @@
 /*
- * lexer.l  --  Analizador léxico (Flex) del lenguaje de inserción
- * ---------------------------------------------------------------------------
- * Reconoce los tokens de sentencias como:
- * 
- * insertar en tabla t_clientes valores: id = 1, nombre = 'Ana' fin;
- * 
- * Flex compila todas las reglas en UN solo autómata finito determinista
- * (AFD) y lo ejecuta con la política "coincidencia más larga; en empate,
- * la regla escrita primero". Por eso las palabras reservadas están ANTES
- * que la regla de identificadores.
- * ---------------------------------------------------------------------------
+ * lexer.l  --  Analizador léxico (Flex)
  */
 %option noyywrap nounput noinput yylineno 8bit
 
@@ -68,9 +58,6 @@ static char *desescapar_cadena(const char *lexema, size_t largo) {
 LETRA       [A-Za-z_]
 DIGITO      [0-9]
 ENTERO      -?{DIGITO}+
-CUERPO      ([^'\n]|'')*
-CADENA_OK   '{CUERPO}'
-CADENA_ABIERTA  '{CUERPO}
 COMENTARIO  "--"[^\n]*
 
 %%
@@ -84,10 +71,8 @@ COMENTARIO  "--"[^\n]*
 "verdadero"     { yylval.booleano = 1; DEVOLVER(BOOLEANO); }
 "falso"         { yylval.booleano = 0; DEVOLVER(BOOLEANO); }
 
-/* Conjunto finito de tablas válidas (prefijo t_) */
 t_(clientes|productos|pedidos)  { yylval.cadena = copiar(yytext, yyleng); DEVOLVER(TABLE_ID); }
 
-/* Identificadores de columna/campo */
 {LETRA}({LETRA}|{DIGITO})*      { yylval.cadena = copiar(yytext, yyleng); DEVOLVER(CAMPO); }
 
 {ENTERO}        {
@@ -99,15 +84,19 @@ t_(clientes|productos|pedidos)  { yylval.cadena = copiar(yytext, yyleng); DEVOLV
                     DEVOLVER(ENTERO);
                 }
 
-{CADENA_OK}     {
+\'([^'\n]|'')*\'  {
                     yylval.cadena = desescapar_cadena(yytext, (size_t)yyleng);
                     DEVOLVER(CADENA);
-                }
-{CADENA_ABIERTA} {
-                    ERROR_LEX("cadena sin cerrar (falta la comilla ' final)");
-                }
+                  }
 
-":"|";"|","|"="  { DEVOLVER(yytext[0]); }
+\'([^'\n]|'')*    {
+                    ERROR_LEX("cadena sin cerrar (falta la comilla ' final)");
+                  }
+
+":"             { DEVOLVER(DOSPUNTOS); }
+";"             { DEVOLVER(PUNTOYCOMA); }
+","             { DEVOLVER(COMA); }
+"="             { DEVOLVER(IGUAL); }
 
 {COMENTARIO}    { /* ignorar */ }
 [ \t\r]+        { /* ignorar */ }

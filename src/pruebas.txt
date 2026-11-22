@@ -1,17 +1,44 @@
--- PRUEBA 1: Valida
-insertar en tabla t_clientes valores: id = 1, nombre = 'Ana', ciudad = 'Tunja', activo = verdadero fin;
+-- PRUEBA 1: Válida
+insertar en tabla t_clientes valores: id = 1, nombre = 'Ana', activo = verdadero fin;
 
--- PRUEBA 2: Valida
-insertar en tabla t_productos valores: codigo = 100, nombre = 'Teclado', stock = 25, disponible = falso fin;
+-- PRUEBA 2: Válida
+insertar en tabla t_productos valores: codigo = 100, nombre = 'Teclado', disponible = falso fin;
 
--- PRUEBA 3: Valida
-insertar en tabla t_pedidos valores: id = 1, cliente_id = 1, total = 50000, pagado = verdadero fin;
+-- PRUEBA 3: Válida
+insertar en tabla t_pedidos valores: id = 1, cliente_id = 1, total = 50000 fin;
 
--- PRUEBA 4: Error Sintactico (falta coma)
-insertar en tabla t_clientes valores: id = 2 nombre = 'Luis' fin;
+-- PRUEBA 4: Error Sintáctico (falta t_)
+insertar en tabla clientes valores: id = 1 fin;
 
--- PRUEBA 5: Error Sintactico (falta el fin)
-insertar en tabla t_clientes valores: id = 3, nombre = 'Pedro';
+-- PRUEBA 5: Error Sintáctico (prefijo incorrecto)
+insertar en tabla table_clientes valores: id = 1 fin;
 
--- PRUEBA 6: Error Lexico (tabla no válida, falta t_)
-insertar en tabla clientes valores: id = 4, nombre = 'Maria' fin;
+-- PRUEBA 6: Error Sintáctico (tabla no válida)
+insertar en tabla t_1 valores: id = 1 fin;
+
+-- PRUEBA 7: Error Sintáctico (falta 's' final)
+insertar en tabla t_cliente valores: id = 1 fin;
+
+-- PRUEBA 8: Error Sintáctico (tabla no definida)
+insertar en tabla t_otro valores: id = 1 fin;
+
+-- PRUEBA 9: Error Sintáctico (falta coma)
+insertar en tabla t_clientes valores: id = 1 nombre = 'Ana' fin;
+
+-- PRUEBA 10: Error Sintáctico (== no es =)
+insertar en tabla t_clientes valores: id == 1 fin;
+
+-- PRUEBA 11: Error Sintáctico (falta ;)
+insertar en tabla t_clientes valores: id = 1 fin
+
+-- PRUEBA 12: Error Semántico (campo duplicado)
+insertar en tabla t_clientes valores: id = 1, id = 2 fin;
+
+-- PRUEBA 13: Error Sintáctico (tabla no válida)
+insertar en tabla t_inexistente valores: id = 1 fin;
+
+-- PRUEBA 14: Error Semántico (tipo incompatible)
+insertar en tabla t_clientes valores: id = '1' fin;
+
+-- PRUEBA 15: Válida (campos opcionales permitidos)
+insertar en tabla t_productos valores: nombre = 'Mouse' fin;

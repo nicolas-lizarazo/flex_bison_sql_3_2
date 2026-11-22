@@ -1,12 +1,5 @@
 /*
  * parser.y  --  Analizador sintáctico (Bison)
- * ---------------------------------------------------------------------------
- * Implementa la gramática libre de contexto del lenguaje de inserción.
- * La estructura principal es:
- *   sentencia -> INSERTAR EN TABLA TABLE_ID VALORES : lista FIN ;
- *   lista -> asignacion (COMA asignacion)*
- *   asignacion -> CAMPO = valor
- * ---------------------------------------------------------------------------
  */
 %{
 #include <stdio.h>
@@ -16,6 +9,8 @@
 
 void yyerror(const char *s);
 int yylex(void);
+
+extern int ultimo_token_fue_error_lexico;
 
 ListaCampos lista_actual;
 int linea_sentencia = 0;

@@ -6,11 +6,20 @@
 #include "db.h"
 #include "parser.tab.h"
 
-Estadisticas estadisticas = { 0, 0, 0, 0, 0 };
+/* --- Declaraciones externas de Flex --- */
+typedef struct yy_buffer_state *YY_BUFFER_STATE;
+extern FILE *yyin;
+extern YY_BUFFER_STATE yy_scan_string(const char *str);
+extern void yy_delete_buffer(YY_BUFFER_STATE b);
+extern int yyparse(void);
+extern int yylex(void);
 
+/* --- Declaraciones de funciones del parser --- */
 void parser_iniciar(void);
 void parser_liberar(void);
 void lexer_reiniciar_posicion(void);
+
+Estadisticas estadisticas = { 0, 0, 0, 0, 0 };
 
 int main(int argc, char **argv) {
     const char *ruta_bd = "taller.db";
@@ -24,6 +33,7 @@ int main(int argc, char **argv) {
             case 'l': limpiar = 1; break;
             case 'q': silencioso = 1; break;
             case 'h': return 0;
+            default: return 2;
         }
     }
 
